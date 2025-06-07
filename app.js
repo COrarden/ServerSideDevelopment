@@ -1,48 +1,38 @@
-// This is a simple Express.js application that serves static files and provides an API endpoint for pies.
-// It uses the Express framework to handle HTTP requests and responses.
-// It also includes a model for managing pies, which can be extended as needed.
+const express = require('express');
+const app = express();
+const morgan = require('morgan'); // Import Morgan for logging HTTP requests
+const PORT = 3000;
+const todoRouter = require('./router/todo_api'); // Import the todo router
 
-const express = require('express')
-const app = express()
-const port = 3000
-const piesModel = require('./piesModel');
-const PIE_API_URL = '/api/pies';
+//Middleware
+app.use(express.urlencoded()); // Parse URL-encoded bodies (form submissions)
+app.use(morgan("tiny")); // Use Morgan for logging HTTP requests
+//Middleware End
 
-app.use(express.static('public')) // Serve static files from the "public" directory
-app.use(express.json()); // Middleware to parse JSON bodies
+//Routes
+app.use("/api/todo", todoRouter); // Use the todo router for /api/todo routes
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-});
 
-app.post("/", (req, res) => {
-    res.json({ posted: True });
-});
-
-app.get(PIE_API_URL, (req, res) => {
-    const pies = piesModel.readPies();
-    res.json({ pies: pies });
-});
-
-app.post(PIE_API_URL, (req, res) => {
-    const flavor = req.body;
-    piesModel.createPie(flavor);
-    const pies = piesModel.readPies();
-    res.status(201)
-    res.json({ pies: pies });
-});
-
-app.put(PIE_API_URL, (req, res) => {
-    const { flavor, newFlavor } = req.body;
-    piesModel.updatePie(flavor, newFlavor);
-    constpies = piesModel.readPies();
-    res.status(202);
-    res.json({ pies: pies });
+app.get("/sanity", (req, res) => {
+    res.send("Sanity Check: App is running!");
 }
 );
 
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+app.get("/hello", (req, res) => {
+    res.status(200).send("Hello");
 });
-// To run this app, save it as app.js and run `node app.js` in your terminal.
+
+//Anything with a * should be the last route
+app.get("/*splat", (req, res) => {
+    const splat = req.params.splat;
+    res
+        .status(404)
+        .end(`Unexpected Route Wildcard Route Caught: ${splat}`);
+});
+//Routes End
+
+
+
+app.listen(PORT, () => {
+    console.log(`App is listening on http://localhost:${PORT}`);
+});

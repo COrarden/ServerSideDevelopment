@@ -1,10 +1,26 @@
 {
+  "name": "serversidedevelopment",
+  "version": "1.0.0",
+  "description": "ToDo API",
+  "homepage": "https://github.com/COrarden/ServerSideDevelopment#readme",
+  "bugs": {
+    "url": "https://github.com/COrarden/ServerSideDevelopment/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/COrarden/ServerSideDevelopment.git"
+  },
+  "license": "ISC",
+  "author": "CORarden",
+  "type": "commonjs",
+  "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
